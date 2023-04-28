@@ -7,12 +7,46 @@
 /**
  * @type {import('gatsby').GatsbyNode['createPages']}
  */
-exports.createPages = async ({ actions }) => {
-  const { createPage } = actions
-  createPage({
-    path: "/using-dsg",
-    component: require.resolve("./src/templates/using-dsg.js"),
-    context: {},
-    defer: true,
+const path = require("path")
+
+exports.createPages = async ({ graphql, actions }) => {
+  const { createRedirect, createPage } = actions
+  const productList = await graphql(`
+    query {
+      jsonserver {
+        allProducts {
+          id
+          title
+          description
+          price
+          discountPercentage
+          rating
+          stock
+          brand
+          category
+          thumbnail
+          images
+        }
+      }
+    }
+  `)
+
+  const productTemplate = path.resolve(`src/templates/product-detail.tsx`)
+
+  productList.data.jsonserver.allProducts.forEach(node => {
+    createPage({
+      path: `/products/${node.id}`,
+      component: productTemplate,
+      context: {
+        product: node,
+      },
+    })
+  })
+
+  createRedirect({
+    fromPath: `/`,
+    isPermanent: false,
+    redirectInBrowser: true,
+    toPath: `/products`,
   })
 }

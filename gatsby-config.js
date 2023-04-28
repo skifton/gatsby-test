@@ -16,11 +16,20 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-image`,
+    'gatsby-plugin-postcss',
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
         path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-graphql',
+      options: {
+        typeName: 'JSONServer',
+        fieldName: 'jsonserver',
+        url: 'http://localhost:3000/graphql',
       },
     },
     `gatsby-transformer-sharp`,
