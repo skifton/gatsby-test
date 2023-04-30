@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from "react"
 import clsx from "clsx"
-import { navigate } from "gatsby"
+import { navigate } from "gatsby-link"
 import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
@@ -14,18 +14,10 @@ interface IProps {
   siblingCount?: number
   currentPage: number
   pageSize: number
-  location: Location
 }
 
 const Pagination: React.FC<IProps> = memo(
-  ({
-    onPageChange,
-    totalCount,
-    siblingCount,
-    currentPage,
-    pageSize,
-    location,
-  }) => {
+  ({ onPageChange, totalCount, siblingCount, currentPage, pageSize }) => {
     const paginationRange =
       usePagination({
         currentPage,
@@ -47,18 +39,18 @@ const Pagination: React.FC<IProps> = memo(
     const nextPageHandler = () => {
       const nextPage = currentPage + 1
       onPageChange(nextPage)
-      navigate(`${location.pathname}?page=${nextPage}`, { replace: true })
+      navigate(`?page=${nextPage}`, { replace: true })
     }
 
     const previousPageHandler = () => {
       const previousPage = currentPage - 1
       onPageChange(previousPage)
-      navigate(`${location.pathname}?page=${previousPage}`, { replace: true })
+      navigate(`?page=${previousPage}`, { replace: true })
     }
 
     const selectPage = (page: string | number) => {
       onPageChange(page)
-      navigate(`${location.pathname}?page=${page}`, { replace: true })
+      navigate(`?page=${page}`, { replace: true })
     }
 
     if (

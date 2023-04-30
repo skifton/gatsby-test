@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import queryString from "query-string"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import ProductList from "../components/ProductList"
@@ -11,10 +12,9 @@ import { getFilteredProductList } from "../utils/getFilteredProductList"
 
 const ProductsPage = ({ location }) => {
   const [filterValue, setFilterValue] = useState("")
-  const { search } = location
-  const params = new URLSearchParams(search)
+  const queryParams = queryString.parse(location.search)
   const [currentPage, setCurrentPage] = useState<string | number>(
-    Number(params.get("page")) || 1
+    Number(queryParams.page) || 1
   )
   const debouncedSearchValue = useDebounce(filterValue, 500)
   const productList = getProductList()
@@ -55,7 +55,6 @@ const ProductsPage = ({ location }) => {
         totalCount={filteredProducts.length}
         pageSize={9}
         onPageChange={pageChangeHandler}
-        location={location}
       />
     </Layout>
   )
