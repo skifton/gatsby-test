@@ -17,7 +17,6 @@ module.exports = {
   plugins: [
     `gatsby-plugin-image`,
     'gatsby-plugin-postcss',
-    "gatsby-plugin-use-query-params",
     {
       resolve: `gatsby-source-filesystem`,
       options: {
