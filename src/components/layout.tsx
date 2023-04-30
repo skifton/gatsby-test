@@ -13,6 +13,7 @@ const Layout = ({ children }) => {
       >
         {children}
       </main>
+      <footer role="footer" className="w-full mt-20 mb-8 text-center">Copyright ©2023 Anton Simanenkau</footer>
     </>
   )
 }

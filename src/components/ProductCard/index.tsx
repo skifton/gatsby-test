@@ -12,7 +12,8 @@ const ProductCard: React.FC<IProps> = ({ product }) => {
     <Link
       to={`/products/${product.id}`}
       aria-label={`Product Card for ${product.title}`}
-      className="group no-underline"
+      tabIndex={0}
+      className="group no-underline text-black"
     >
       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg sm:aspect-h-3 sm:aspect-w-2">
         <Img

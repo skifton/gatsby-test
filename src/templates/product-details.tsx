@@ -43,8 +43,7 @@ const ProductDetails: React.FC<{ pageContext: any }> = ({ pageContext }) => {
                                 "(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw",
                               srcSet: "",
                             }}
-                            alt=""
-                            aria-hidden="true"
+                            alt={`${product.title} image number${index + 1}`}
                             className="h-full w-full object-cover object-center group-hover:opacity-75"
                           />
                         </span>
@@ -70,8 +69,7 @@ const ProductDetails: React.FC<{ pageContext: any }> = ({ pageContext }) => {
                 <Tab.Panel key={image}>
                   <img
                     src={image}
-                    alt=""
-                    aria-hidden={index !== 0}
+                    alt={`${product.title} image number${index + 1}`}
                     className="h-full w-full object-cover object-center sm:rounded-lg"
                   />
                 </Tab.Panel>
