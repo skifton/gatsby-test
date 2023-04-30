@@ -43,6 +43,16 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   })
 
+  createPage({
+    path: `/products`,
+    component: path.resolve('src/pages/products.tsx'),
+    context: {
+      perPage: 9,
+      page: 0,
+      query: ""
+    },
+  })
+
   createRedirect({
     fromPath: `/`,
     isPermanent: false,

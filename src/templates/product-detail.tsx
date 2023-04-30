@@ -1,5 +1,6 @@
 import React from "react"
 import clsx from "clsx"
+import Img from "gatsby-image"
 import { Tab } from "@headlessui/react"
 import { StarIcon } from "@heroicons/react/20/solid"
 import Layout from "../components/layout"
@@ -26,10 +27,16 @@ const ProductDetail: React.FC<{ pageContext: any }> = ({ pageContext }) => {
                       <>
                         <span className="sr-only">{product.title}</span>
                         <span className="absolute inset-0 overflow-hidden rounded-md">
-                          <img
-                            src={image}
-                            alt={image}
-                            className="h-full w-full object-cover object-center"
+                          <Img
+                            fluid={{
+                              src: image,
+                              aspectRatio: 0,
+                              sizes: "",
+                              srcSet: "",
+                            }}
+                            alt={product?.title}
+                            aria-label={`${product.title} Main image`}
+                            className="h-96 w-full object-cover object-center group-hover:opacity-75"
                           />
                         </span>
                         <span
@@ -55,6 +62,7 @@ const ProductDetail: React.FC<{ pageContext: any }> = ({ pageContext }) => {
                   <img
                     src={image}
                     alt={product.title}
+                    aria-label={`${product.title} image`}
                     className="h-full w-full object-cover object-center sm:rounded-lg"
                   />
                 </Tab.Panel>

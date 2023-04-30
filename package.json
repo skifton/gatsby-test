@@ -9,9 +9,11 @@
     "@heroicons/react": "^2.0.17",
     "clsx": "^1.2.1",
     "gatsby": "^5.9.0",
+    "gatsby-image": "^3.11.0",
     "gatsby-plugin-image": "^3.9.0",
     "gatsby-plugin-manifest": "^5.9.0",
     "gatsby-plugin-sharp": "^5.9.0",
+    "gatsby-plugin-use-query-params": "^1.0.1",
     "gatsby-source-filesystem": "^5.9.0",
     "gatsby-source-graphql": "^5.9.0",
     "gatsby-transformer-sharp": "^5.9.0",
@@ -19,7 +21,8 @@
     "react": "^18.2.0",
     "react-awesome-slider": "^4.1.0",
     "react-carousel-minimal": "^1.4.1",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "use-query-params": "^2.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
