@@ -1,11 +1,11 @@
 import React, { memo } from "react"
 import clsx from "clsx"
-import { usePagination, DOTS } from "../../hooks/usePagination"
 import { navigate } from "gatsby"
 import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
 } from "@heroicons/react/20/solid"
+import { usePagination, DOTS } from "../../hooks/usePagination"
 
 interface IProps {
   onPageChange: (page: string | number) => void
@@ -62,12 +62,8 @@ const Pagination: React.FC<IProps> = memo(
           <button
             type="button"
             onClick={onPrevious}
-            className={clsx(
-              "inline-flex border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700",
-              {
-                disabled: currentPage === 1,
-              }
-            )}
+            disabled={currentPage === 1}
+            className="inline-flex border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
             aria-label="Previous Page"
           >
             <ArrowLongLeftIcon
@@ -115,12 +111,11 @@ const Pagination: React.FC<IProps> = memo(
           <button
             type="button"
             onClick={onNext}
-            className={clsx(
-              "inline-flex border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700",
-              {
-                disabled: currentPage,
-              }
-            )}
+            disabled={
+              currentPage ===
+              (paginationRange && paginationRange[paginationRange?.length - 1])
+            }
+            className="inline-flex border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
             aria-label="Next page"
           >
             Next

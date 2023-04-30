@@ -9,7 +9,7 @@
  */
 const path = require("path")
 
-exports.createPages = async ({ graphql, actions }) => {
+exports.createPages = async ({ page ,graphql, actions }) => {
   const { createRedirect, createPage } = actions
   const productList = await graphql(`
     query {
