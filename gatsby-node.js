@@ -9,8 +9,8 @@
  */
 const path = require("path")
 
-exports.createPages = async ({ page ,graphql, actions }) => {
-  const { createRedirect, createPage } = actions
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions
   const productList = await graphql(`
     query {
       jsonserver {
@@ -41,22 +41,5 @@ exports.createPages = async ({ page ,graphql, actions }) => {
         product: node,
       },
     })
-  })
-
-  createPage({
-    path: `/products`,
-    component: path.resolve('src/pages/products.tsx'),
-    context: {
-      perPage: 9,
-      page: 0,
-      query: ""
-    },
-  })
-
-  createRedirect({
-    fromPath: `/`,
-    isPermanent: false,
-    redirectInBrowser: true,
-    toPath: `/products`,
   })
 }

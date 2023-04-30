@@ -1,11 +1,12 @@
-import React, { memo } from "react"
+import React, { memo, useMemo } from "react"
 import clsx from "clsx"
 import { navigate } from "gatsby"
 import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
 } from "@heroicons/react/20/solid"
-import { usePagination, DOTS } from "../../hooks/usePagination"
+import { usePagination } from "../../hooks/usePagination"
+import { DOTS } from "../../constants/pagination"
 
 interface IProps {
   onPageChange: (page: string | number) => void
@@ -20,37 +21,52 @@ const Pagination: React.FC<IProps> = memo(
   ({
     onPageChange,
     totalCount,
-    siblingCount = 1,
+    siblingCount,
     currentPage,
     pageSize,
     location,
   }) => {
-    const paginationRange = usePagination({
-      currentPage,
-      totalCount,
-      siblingCount,
-      pageSize,
-    })
+    const paginationRange =
+      usePagination({
+        currentPage,
+        totalCount,
+        siblingCount,
+        pageSize,
+      }) || []
 
-    if (currentPage === 0 || (paginationRange?.length || 0) < 2) {
-      return null
-    }
+    const isFirstPage = useMemo(
+      () => currentPage === paginationRange[0],
+      [currentPage, paginationRange]
+    )
 
-    const onNext = () => {
+    const isLastPage = useMemo(
+      () => currentPage === paginationRange.at(-1),
+      [currentPage, paginationRange]
+    )
+
+    const nextPageHandler = () => {
       const nextPage = currentPage + 1
       onPageChange(nextPage)
       navigate(`${location.pathname}?page=${nextPage}`, { replace: true })
     }
 
-    const onPrevious = () => {
+    const previousPageHandler = () => {
       const previousPage = currentPage - 1
       onPageChange(previousPage)
       navigate(`${location.pathname}?page=${previousPage}`, { replace: true })
     }
 
-    const onClickPage = (page: string | number) => {
+    const selectPage = (page: string | number) => {
       onPageChange(page)
       navigate(`${location.pathname}?page=${page}`, { replace: true })
+    }
+
+    if (
+      currentPage === 0 ||
+      paginationRange == null ||
+      paginationRange.length < 2
+    ) {
+      return null
     }
 
     return (
@@ -61,8 +77,8 @@ const Pagination: React.FC<IProps> = memo(
         <div className="flex m-0 w-0 flex-1">
           <button
             type="button"
-            onClick={onPrevious}
-            disabled={currentPage === 1}
+            onClick={previousPageHandler}
+            disabled={isFirstPage}
             className="inline-flex border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
             aria-label="Previous Page"
           >
@@ -96,7 +112,7 @@ const Pagination: React.FC<IProps> = memo(
                       pageNumber === currentPage,
                   }
                 )}
-                onClick={() => onClickPage(pageNumber)}
+                onClick={() => selectPage(pageNumber)}
                 role="listitem"
                 aria-label={`Page ${pageNumber}`}
                 tabIndex={0}
@@ -110,11 +126,8 @@ const Pagination: React.FC<IProps> = memo(
         <div className="flex w-0 flex-1 justify-end">
           <button
             type="button"
-            onClick={onNext}
-            disabled={
-              currentPage ===
-              (paginationRange && paginationRange[paginationRange?.length - 1])
-            }
+            onClick={nextPageHandler}
+            disabled={isLastPage}
             className="inline-flex border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
             aria-label="Next page"
           >

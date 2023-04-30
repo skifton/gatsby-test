@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import Img from "gatsby-image"
 import { Link } from "gatsby"
 import { IProduct } from "../../models/product.model"
@@ -24,7 +24,7 @@ const ProductCard: React.FC<IProps> = ({ product }) => {
             srcSet: "",
           }}
           alt={`${product.title} Main image`}
-          className="h-96 w-full object-cover object-center group-hover:opacity-75"
+          className="h-96 w-full object-none object-center group-hover:opacity-75"
           loading="lazy"
         />
       </div>
@@ -37,4 +37,4 @@ const ProductCard: React.FC<IProps> = ({ product }) => {
   )
 }
 
-export default ProductCard
+export default memo(ProductCard)

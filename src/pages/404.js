@@ -8,7 +8,7 @@ const NotFoundPage = () => (
     <div className="flex justify-center items-center">
       <div className="text-center">
         <h1 className="text-2xl mt-20">This Page Not Found</h1>
-        <p className="">
+        <p>
           You just hit a route that doesn&#39;t exist... the sadness.
         </p>
       </div>

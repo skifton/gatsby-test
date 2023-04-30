@@ -10,13 +10,13 @@ import { getProductsForCurrentPage } from "../utils/getProductsForCurrentPage"
 import { getFilteredProductList } from "../utils/getFilteredProductList"
 
 const ProductsPage = ({ location }) => {
-  const [query, setQuery] = useState("")
+  const [filterValue, setFilterValue] = useState("")
   const { search } = location
   const params = new URLSearchParams(search)
   const [currentPage, setCurrentPage] = useState<string | number>(
     Number(params.get("page")) || 1
   )
-  const debouncedSearchValue = useDebounce(query, 500)
+  const debouncedSearchValue = useDebounce(filterValue, 500)
   const productList = getProductList()
 
   const filteredProducts = getFilteredProductList(
@@ -28,9 +28,13 @@ const ProductsPage = ({ location }) => {
     Number(currentPage),
     filteredProducts
   )
+  
+  const changeFilterValueHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterValue(event.target.value)
+  }
 
-  const onChangeSearchInput = (event: any) => {
-    setQuery(event.target.value)
+  const pageChangeHandler = (page: string | number) => {
+    setCurrentPage(page)
   }
 
   return (
@@ -38,17 +42,19 @@ const ProductsPage = ({ location }) => {
       <div className="flex justify-center mt-10 md:justify-end">
         <SearchInput
           wrapperClassName="w-full md:w-72"
-          onChange={onChangeSearchInput}
-          value={query}
+          onChange={changeFilterValueHandler}
+          value={filterValue}
           id="search-products"
         />
       </div>
+
       <ProductList products={productsForCurrentPage} />
+
       <Pagination
         currentPage={Number(currentPage)}
         totalCount={filteredProducts.length}
         pageSize={9}
-        onPageChange={(page: string | number) => setCurrentPage(page)}
+        onPageChange={pageChangeHandler}
         location={location}
       />
     </Layout>

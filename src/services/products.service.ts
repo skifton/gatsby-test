@@ -3,9 +3,9 @@ import { graphql, useStaticQuery } from "gatsby"
 export const getProductList = () => {
   const data = useStaticQuery(
     graphql`
-      query MyQuery($perPage: Int, $page: Int, $query: String) {
+      query {
         jsonserver {
-          allProducts(perPage: $perPage, page: $page, filter: { q: $query }) {
+          allProducts {
             id
             title
             price

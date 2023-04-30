@@ -1,13 +1,14 @@
 import { useMemo } from "react"
 import { getRangeOfPages } from "../utils/getRangeOfPages"
-export const DOTS = "..."
+import { DOTS } from "../constants/pagination"
 
 interface IProps {
   totalCount: number
   pageSize: number
-  siblingCount: number
+  siblingCount?: number
   currentPage: number
 }
+
 export const usePagination = ({
   totalCount,
   pageSize,
