@@ -14,8 +14,8 @@ export const getProductList = () => {
           }
         }
       }
-    `
-  )
+    `,
+  );
 
   return data.jsonserver.allProducts
 }

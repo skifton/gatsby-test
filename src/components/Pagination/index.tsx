@@ -1,18 +1,28 @@
 import React from "react"
 import clsx from "clsx"
 import { usePagination, DOTS } from "../../hooks/usePagination"
-import { Link } from "gatsby"
+import { navigate } from "gatsby"
 import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
 } from "@heroicons/react/20/solid"
 
-const Pagination = ({
+interface IProps {
+  onPageChange: (page: string | number) => void
+  totalCount: number
+  siblingCount?: number
+  currentPage: number
+  pageSize: number
+  location: Location
+}
+
+const Pagination: React.FC<IProps> = ({
   onPageChange,
   totalCount,
   siblingCount = 1,
   currentPage,
   pageSize,
+  location,
 }) => {
   const paginationRange = usePagination({
     currentPage,
@@ -26,23 +36,38 @@ const Pagination = ({
   }
 
   const onNext = () => {
-    onPageChange(currentPage + 1)
+    const nextPage = currentPage + 1
+    onPageChange(nextPage)
+    navigate(`${location.pathname}?page=${nextPage}`, { replace: true })
   }
 
   const onPrevious = () => {
-    onPageChange(currentPage - 1)
+    const previousPage = currentPage - 1
+    onPageChange(previousPage)
+    navigate(`${location.pathname}?page=${previousPage}`, { replace: true })
   }
 
-  //let lastPage = paginationRange[paginationRange.length - 1];
+  const onClickPage = (page: string | number) => {
+    onPageChange(page)
+    navigate(`${location.pathname}?page=${page}`, { replace: true })
+  }
 
   return (
-    <nav className="flex w-full my-10 justify-between border-t border-gray-200 px-4 sm:px-0">
+    <nav
+      className="flex w-full my-10 justify-between border-t border-gray-200 px-4 sm:px-0"
+      aria-label="Pagination"
+    >
       <div className="flex m-0 w-0 flex-1">
         <button
           type="button"
           onClick={onPrevious}
-          //   disabled={currentPage === 1}
-          className="inline-flex border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          className={clsx(
+            "inline-flex border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700",
+            {
+              disabled: currentPage === 1,
+            }
+          )}
+          aria-label="Previous Page"
         >
           <ArrowLongLeftIcon
             className="mr-3 h-5 w-5 text-gray-400"
@@ -52,10 +77,16 @@ const Pagination = ({
         </button>
       </div>
 
-      <ul className="hidden m-0 md:-mt-px md:flex">
-        {paginationRange?.map(pageNumber => {
+      <ul className="hidden m-0 md:-mt-px md:flex" role="list">
+        {paginationRange?.map((pageNumber, index) => {
           if (pageNumber === DOTS) {
-            return <li>&#8230;</li>
+            return (
+              <li key={`dots${index}`}>
+                <span className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500">
+                  &#8230;
+                </span>
+              </li>
+            )
           }
 
           return (
@@ -68,7 +99,10 @@ const Pagination = ({
                     pageNumber === currentPage,
                 }
               )}
-              onClick={() => onPageChange(pageNumber)}
+              onClick={() => onClickPage(pageNumber)}
+              role="listitem"
+              aria-label={`Page ${pageNumber}`}
+              tabIndex={0}
             >
               {pageNumber}
             </li>
@@ -80,13 +114,19 @@ const Pagination = ({
         <button
           type="button"
           onClick={onNext}
-          //disabled={currentPage === lastPage}
-          className="inline-flex border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          className={clsx(
+            "inline-flex border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700",
+            {
+              disabled: currentPage,
+            }
+          )}
+          aria-label="Next page"
         >
           Next
           <ArrowLongRightIcon
             className="ml-3 h-5 w-5 text-gray-400"
             aria-hidden="true"
+            aria-label="Arrow pointing to the right"
           />
         </button>
       </div>

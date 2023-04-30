@@ -31,7 +31,7 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
 
-  const productTemplate = path.resolve(`src/templates/product-detail.tsx`)
+  const productTemplate = path.resolve(`src/templates/product-details.tsx`)
 
   productList.data.jsonserver.allProducts.forEach(node => {
     createPage({

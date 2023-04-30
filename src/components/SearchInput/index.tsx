@@ -4,16 +4,21 @@ import clsx from "clsx"
 
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
   wrapperClassName?: string
-  className?: string;
+  className?: string
 }
-const SearchInput: React.FC<IProps> = ({ wrapperClassName, className, ...props }) => {
+
+const SearchInput: React.FC<IProps> = ({
+  wrapperClassName,
+  className,
+  ...props
+}) => {
   return (
     <div className={wrapperClassName}>
       <label
-        html-for="default-search"
+        htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
       >
-        Search
+        Search Products
       </label>
       <div className="relative">
         <div
@@ -29,9 +34,12 @@ const SearchInput: React.FC<IProps> = ({ wrapperClassName, className, ...props }
         <input
           type="search"
           id="default-search"
-          className={clsx("block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", className)}
+          className={clsx(
+            "block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+            className
+          )}
           placeholder="Search Products..."
-          required
+          aria-label="Search Products"
           {...props}
         />
       </div>

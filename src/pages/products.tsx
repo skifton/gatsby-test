@@ -9,10 +9,14 @@ import { getProductList } from "../services/products.service"
 import { getProductsForCurrentPage } from "../utils/getProductsForCurrentPage"
 import { getFilteredProductList } from "../utils/getFilteredProductList"
 
-const ProductsPage = () => {
+const ProductsPage = ({ location }) => {
   const [query, setQuery] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
-  const debouncedSearchValue = useDebounce(query, 1000)
+  const { search } = location
+  const params = new URLSearchParams(search)
+  const [currentPage, setCurrentPage] = useState<string | number>(
+    Number(params.get("page")) || 1
+  )
+  const debouncedSearchValue = useDebounce(query, 500)
   const productList = getProductList()
 
   const filteredProducts = getFilteredProductList(
@@ -21,7 +25,7 @@ const ProductsPage = () => {
   )
 
   const productsForCurrentPage = getProductsForCurrentPage(
-    currentPage,
+    Number(currentPage),
     filteredProducts
   )
 
@@ -36,14 +40,16 @@ const ProductsPage = () => {
           wrapperClassName="w-full md:w-72"
           onChange={onChangeSearchInput}
           value={query}
+          id="search-products"
         />
       </div>
       <ProductList products={productsForCurrentPage} />
       <Pagination
-        currentPage={currentPage}
+        currentPage={Number(currentPage)}
         totalCount={filteredProducts.length}
         pageSize={9}
-        onPageChange={page => setCurrentPage(page)}
+        onPageChange={(page: string | number) => setCurrentPage(page)}
+        location={location}
       />
     </Layout>
   )

@@ -1,12 +1,12 @@
 import React from "react"
 import clsx from "clsx"
 import Img from "gatsby-image"
-import { Tab } from "@headlessui/react"
-import { StarIcon } from "@heroicons/react/20/solid"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import { Tab } from "@headlessui/react"
+import { StarIcon } from "@heroicons/react/20/solid"
 
-const ProductDetail: React.FC<{ pageContext: any }> = ({ pageContext }) => {
+const ProductDetails: React.FC<{ pageContext: any }> = ({ pageContext }) => {
   const { product } = pageContext
 
   return (
@@ -18,10 +18,18 @@ const ProductDetail: React.FC<{ pageContext: any }> = ({ pageContext }) => {
             {/* Image selector */}
             <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
               <Tab.List className="grid grid-cols-4 gap-6">
-                {product.images.map(image => (
+                {product.images.map((image: string, index: number) => (
                   <Tab
-                    key={product.image}
-                    className="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
+                    key={image}
+                    as="div"
+                    className={clsx(
+                      "relative flex h-24 cursor-pointer items-center justify-center rounded-md text-sm font-medium uppercase",
+                      {
+                        "bg-gray-50 text-gray-900": index === 0,
+                        "bg-white text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4":
+                          index !== 0,
+                      }
+                    )}
                   >
                     {({ selected }) => (
                       <>
@@ -31,12 +39,13 @@ const ProductDetail: React.FC<{ pageContext: any }> = ({ pageContext }) => {
                             fluid={{
                               src: image,
                               aspectRatio: 0,
-                              sizes: "",
+                              sizes:
+                                "(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw",
                               srcSet: "",
                             }}
-                            alt={product?.title}
-                            aria-label={`${product.title} Main image`}
-                            className="h-96 w-full object-cover object-center group-hover:opacity-75"
+                            alt=""
+                            aria-hidden="true"
+                            className="h-full w-full object-cover object-center group-hover:opacity-75"
                           />
                         </span>
                         <span
@@ -57,12 +66,12 @@ const ProductDetail: React.FC<{ pageContext: any }> = ({ pageContext }) => {
             </div>
 
             <Tab.Panels className="aspect-h-1 aspect-w-1 w-full">
-              {product.images.map(image => (
+              {product.images.map((image: string, index: number) => (
                 <Tab.Panel key={image}>
                   <img
                     src={image}
-                    alt={product.title}
-                    aria-label={`${product.title} image`}
+                    alt=""
+                    aria-hidden={index !== 0}
                     className="h-full w-full object-cover object-center sm:rounded-lg"
                   />
                 </Tab.Panel>
@@ -98,7 +107,6 @@ const ProductDetail: React.FC<{ pageContext: any }> = ({ pageContext }) => {
                         "text-indigo-500": product.rating > rating,
                         "text-gray-300": product.rating < rating,
                       })}
-                      aria-hidden="true"
                     />
                   ))}
                 </div>
@@ -108,10 +116,9 @@ const ProductDetail: React.FC<{ pageContext: any }> = ({ pageContext }) => {
 
             <div className="mt-6">
               <h3 className="sr-only">Description</h3>
-              <div
-                className="space-y-6 text-base text-gray-700"
-                dangerouslySetInnerHTML={{ __html: product.description }}
-              />
+              <div className="space-y-6 text-base text-gray-700">
+                {product.description}
+              </div>
             </div>
           </div>
         </div>
@@ -120,8 +127,6 @@ const ProductDetail: React.FC<{ pageContext: any }> = ({ pageContext }) => {
   )
 }
 
-export const Head = () => (
-  <Seo title="Product Detail" description={undefined} children={undefined} />
-)
+export const Head = () => <Seo title="Product Details" />
 
-export default ProductDetail
+export default ProductDetails
